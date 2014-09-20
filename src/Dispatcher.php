@@ -212,7 +212,9 @@ class Dispatcher
 
         $route = $this->router->getApiRouteCollection($version)->getByName($name);
 
-        $uri = ltrim($this->url->route($name, $routeParameters, false, $route), '/');
+        $this->url->setRoutes($this->router->getApiRouteCollection($version));
+
+        $uri = ltrim($this->url->route($name, $routeParameters, false), '/');
 
         return $this->queueRequest($route->methods()[0], $uri, $parameters);
     }
