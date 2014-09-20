@@ -124,8 +124,19 @@ class Dispatcher
      */
     public function attach(array $files)
     {
-        foreach ($files as $key => $path) {
-            $this->files[$key] = new UploadedFile($path, basename($path));
+        foreach ($files as $key => $file) {
+            if($file instanceof UploadedFile)
+            {
+                $this->files[$key] = $file;
+            }
+            else
+            {
+                $this->files[$key] = new UploadedFile(
+                    $file['file'],
+                    basename($file['file']),
+                    (isset($file['mimeType']) ? $file['mimeType'] : null)
+                );
+            }
         }
 
         return $this;
